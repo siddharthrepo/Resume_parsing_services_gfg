@@ -1,0 +1,4 @@
+/.venv
+resume_pr/
+__pycache__/
+/.env
