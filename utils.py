@@ -177,6 +177,7 @@ def extract_name_from_resume(text):
     return name
 
 def match(job_description , resume):
+
     vectorizer = TfidfVectorizer().fit_transform([job_description, resume])
     vectors = vectorizer.toarray()
     
@@ -187,6 +188,29 @@ def match(job_description , resume):
     # Round similarity score
     similarity_score = round(similarity, 2)
 
+    similarity_score = similarity_score * 100
     return similarity_score
 
     
+def sample_match(job_description , resume):
+    total = []
+    skills = extract_skills_from_resume(job_description)
+    education = extract_education_from_resume(job_description)
+
+    total = ' '.join(skills) + ' '.join(education)
+    print(total)
+    
+    re_total = ' '.join(extract_skills_from_resume(resume)) + ' '.join(extract_education_from_resume(resume))
+
+    print(re_total)
+    vectorizer = TfidfVectorizer().fit_transform([total, re_total])
+    vectors = vectorizer.toarray()
+    
+     # Calculate cosine similarity
+    job_vector = vectors[0]
+    resume_vector = vectors[1]
+    similarity = cosine_similarity([job_vector], [resume_vector])[0][0]
+    # Round similarity score
+    similarity_score = round(similarity, 2)
+
+    return similarity_score
